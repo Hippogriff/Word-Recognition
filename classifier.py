@@ -19,4 +19,4 @@ model = load_model()
 past_history = train(model=model, data_augmentation=False, X_train=X_train, X_test=X_test,
                      y_train=y_train, Words_train=Words_train, Words_test=Words_test)
 
-plot( past_history)
+plot(past_history)
