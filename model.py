@@ -82,7 +82,9 @@ def load_model():
     model.add(TimeDistributed(Dense(vocab_size)))
     model.add(Activation('softmax'))
 
-    model.compile(loss='categorical_crossentropy', optimizer='adam')
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  matrics=['accuracy'])
 
     print (model.summary())
     return model
