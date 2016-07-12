@@ -1,7 +1,8 @@
 ## Word recognition using Recursive CNNs, LSTMS, and attentional modelling
 
 RNN model takes its inspiration from [Show and Tell](https://arxiv.org/abs/1411.4555)
-![Image Captioning Model](image_captioining.png)
+
+![Image Captioning Model](image_captioning.png)
 
 Input to the network:
 a) Input to RCNN: Greyscale image of dimension 32X100

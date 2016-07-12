@@ -9,7 +9,7 @@ from train import train
 # TODO Write the code for testing
 # TODO Also think about the best way to test the accuracy of the model
 # TODO Load and save all the training and testing data
-
+# TODO Add README
 max_caption_len = 24
 vocab_size = 38
 batch_size = 3000
