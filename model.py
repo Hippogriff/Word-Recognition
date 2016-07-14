@@ -39,7 +39,7 @@ def load_model():
 
     conv5 = Convolution2D(256, 3, 3, activation='relu',
                           border_mode='same')(maxpool2)
-    drop7 = Dropout(conv5)
+    drop7 = Dropout(0.5)(conv5)
     conv6 = Convolution2D(256, 3, 3, activation='relu',
                           border_mode='same')
     conv6_1 = conv6(drop7)
