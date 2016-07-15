@@ -70,40 +70,53 @@ print (phi._keras_shape)
 image_model = Model(input=inputs, output=phi)
 image_model.summary()
 a = conv8_2 # shape of N, 512, 4, 12
-
+image_model_2 = Model(input=inputs, output=conv8_2)
 
 language_model = Sequential()
 language_model.add(Embedding(input_dim=vocab_size,
                               output_dim=1024,
                               input_length=max_caption_len))
 
-language_model.add(LSTM(output_dim=1024, return_sequences=True,
+L = LSTM(output_dim=1024, return_sequences=True,
                dropout_U=0.2,
-               dropout_W=0.2))
+               dropout_W=0.2)(language_model.layers[-1].output)
 
-s = language_model.layers[-1] # Shape N, 24, 1024
-print (s.output_shape)
+print (L._keras_shape)
+# s = language_model.layers[-1] # Shape N, 24, 1024
+# print (s.output_shape)
 
-language_model.add(TimeDistributed(Dense(12, init='he_normal', activation='relu'))) # let us make the dimensions
+sie = TimeDistributed(Dense(12, init='he_normal', activation='relu'))(L) # let us make the dimensions
+
+print (sie._keras_shape)
+print (image_model.summary())
 # explicit
-print (language_model.layers[-1].output_shape)
+# print (language_model.layers[-1].output_shape)
 
-attention_model = Sequential()
-attention_model.add(Merge([image_model, language_model], mode='sum'))
-attention_model.add(Activation('tanh')) # we have got the tau
+# attention_model = Sequential()
+# attention_model.add(Merge([image_model, language_model], mode='sum'))
+# attention_model.add(Activation('tanh')) # we have got the tau
+#
+# # I have little doubts about this, need to check whether is does the normalization over the
+# # 12 outputs or complete 24 outputs across time span.
+# attention_model.add((Activation('softmax'))) # we have ahpa weights
+#
+# print (attention_model.layers[-1].output_shape) # None, 24, 12)
+#
+# # attention_model.add(Lambda(function=context_vector, output_shape=context_output_shape, arguments=a))
+# alpha = attention_model.layers[-1].output
+# print(type(alpha))
+#
+# final_model = Sequential()
+# final_model.add(Merge([attention_model.layers[-1], image_model.layers[22]], mode='mul'))
+# print (type(sie), type(image_model.layers[-1].output))
 
-# I have little doubts about this, need to check whether is does the normalization over the
-# 12 outputs or complete 24 outputs across time span.
-attention_model.add((Activation('softmax'))) # we have ahpa weights
+# merged = Merge([phi, sie], mode='sum')
+# merged = K.sum((image_model.layers[-1].output, sie), axis=0)
+# tau = Activation('tanh')(merged)
 
-print (attention_model.layers[-1].output_shape) # None, 24, 12)
 
-# attention_model.add(Lambda(function=context_vector, output_shape=context_output_shape, arguments=a))
-alpha = attention_model.layers[-1].output
-print(type(alpha))
 
-final_model = Sequential()
-final_model.add(Merge([attention_model.layers[-1], image_model.layers[22]], mode='mul'))
+
 
 '''
 tau = K.tanh(mapping_a + mapping_s)
