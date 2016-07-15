@@ -50,9 +50,11 @@ conv7 = Convolution2D(512, 3, 3, activation='relu',
 drop10 = Dropout(0.5)(conv7)
 conv8 = Convolution2D(512, 3, 3, activation='relu',
                       border_mode='same')
+
 conv8_1 = conv8(drop10)
 drop11 = Dropout(0.5)(conv8_1)
 conv8_2 = conv8(drop11) # shape of N, 512, 4, 12
+
 print (conv8_2._keras_shape)
 
 # I = Flatten()(a) # shape 24576
@@ -69,7 +71,6 @@ image_model = Model(input=inputs, output=phi)
 image_model.summary()
 a = conv8_2 # shape of N, 512, 4, 12
 
-print (image_model.layers[-1].output_shape, conv8_2._keras_shape)
 
 language_model = Sequential()
 language_model.add(Embedding(input_dim=vocab_size,
@@ -83,26 +84,26 @@ language_model.add(LSTM(output_dim=1024, return_sequences=True,
 s = language_model.layers[-1] # Shape N, 24, 1024
 print (s.output_shape)
 
-
 language_model.add(TimeDistributed(Dense(12, init='he_normal', activation='relu'))) # let us make the dimensions
 # explicit
 print (language_model.layers[-1].output_shape)
 
-#arguments for the lambda function
-arguments = {'a':a}
-
 attention_model = Sequential()
 attention_model.add(Merge([image_model, language_model], mode='sum'))
 attention_model.add(Activation('tanh')) # we have got the tau
+
+# I have little doubts about this, need to check whether is does the normalization over the
+# 12 outputs or complete 24 outputs across time span.
 attention_model.add((Activation('softmax'))) # we have ahpa weights
+
 print (attention_model.layers[-1].output_shape) # None, 24, 12)
 
 # attention_model.add(Lambda(function=context_vector, output_shape=context_output_shape, arguments=a))
 alpha = attention_model.layers[-1].output
 print(type(alpha))
 
-# Add a tau function to do the bumbo jumbo
-print (attention_model.layers[-1].output_shape)
+final_model = Sequential()
+final_model.add(Merge([attention_model.layers[-1], image_model.layers[22]], mode='mul'))
 
 '''
 tau = K.tanh(mapping_a + mapping_s)
