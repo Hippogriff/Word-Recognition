@@ -2,6 +2,7 @@
 
 RNN model takes its inspiration from [Show and Tell](https://arxiv.org/abs/1411.4555)
 
+The training is done on [Synthetic Dataset](http://www.robots.ox.ac.uk/~vgg/data/text/)
 ![Image Captioning Model](image_captioning.png)
 
 Input to the network:
@@ -16,8 +17,6 @@ Following things are tested:
 2. LSTM for the language modeling task. GRU can be used also, that will give faster computation
    and requires lesser memory.
 
-3. *TODO*: Attentional modeling for selectively focus on part of the word.
-
 
 This network can be used for other image captioning, only difference is that the input to the lstm
 will be word vectors rather than character vectors.
@@ -28,6 +27,10 @@ will be word vectors rather than character vectors.
 
 ###Future work:
 
+Attention modeling to focus selectively on part of image 
+
 
 
 ### License
+
+The code is released under a [revised (3-clause) BSD License](http://directory.fsf.org/wiki/License:BSD_3Clause).
