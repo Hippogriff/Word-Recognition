@@ -6,10 +6,14 @@ The training is done on [Synthetic Dataset](http://www.robots.ox.ac.uk/~vgg/data
 ![Image Captioning Model](image_captioning.png)
 
 Input to the network:
+
 a) Input to RCNN: Greyscale image of dimension 32X100
+
 b) Input to LSTM: Character vector and Image features extracted from CNN
 
+
 Following things are tested:
+
 1. Recursive Neural Network for increasing the depth of the CNN without increasing number
    parameters. For now two iterations are tried in the recursive layer, in total giving extra 8
    layers, that increases the non linearity by keeping the number of parameters constant.
@@ -19,16 +23,12 @@ Following things are tested:
 
 
 This network can be used for other image captioning, only difference is that the input to the lstm
-will be word vectors rather than character vectors.
-
-
-
+will be character vectors rather than word vectors.
 
 
 ###Future work:
 
 Attention modeling to focus selectively on part of image 
-
 
 
 ### License
