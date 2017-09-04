@@ -26,7 +26,7 @@ This network can be used for other image captioning, only difference is that the
 will be character vectors rather than word vectors.
 
 
-###Future work:
+### Future work:
 
 Attention modeling to focus selectively on part of image 
 
